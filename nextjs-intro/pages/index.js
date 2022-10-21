@@ -1,21 +1,11 @@
 import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 
-const API_KEY = "89b59b87fa2b3c5111c4f6560b25789e";
-
-export default function Home() {
-  const [movies, setMovies] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const { results } = await (await fetch(`/api/movies`)).json();
-      setMovies(results);
-    })();
-  }, []);
+export default function Home({ results }) {
   return (
     <div className="container">
       <Seo title="Home" />
-      {!movies && <h4>Loading...</h4>}
-      {movies.map((movie) => (
+      {results.map((movie) => (
         <div className="movie" key={movie.id}>
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
           <h4>{movie.original_title}</h4>
@@ -27,6 +17,9 @@ export default function Home() {
           grid-template-columns: 1fr 1fr;
           padding: 20px;
           gap: 20px;
+        }
+        .movie {
+          cursor: pointer;
         }
         .movie img {
           max-width: 100%;
@@ -44,4 +37,20 @@ export default function Home() {
       `}</style>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  // function 이름 바꾸면 안됨.
+  // 이코드는 server쪽에서만 작동.
+  // 여기 안의 코드는 client 에서 볼수 없음.
+
+  //서버에서 데이터를 가져오고 프론트에서 뿌려주는것.
+  const { results } = await (
+    await fetch(`http://localhost:3000/api/movies`)
+  ).json();
+  return {
+    props: {
+      results,
+    },
+  };
 }
