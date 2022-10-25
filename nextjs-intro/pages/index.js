@@ -59,7 +59,7 @@ export async function getServerSideProps() {
 
   //서버에서 데이터를 가져오고 프론트에서 뿌려주는것.
   const { results } = await (
-    await fetch(`http://localhost:3000/api/movies`)
+    await fetch(`https://nextjsstartss.vercel.app/api/movies`)
   ).json();
 
   return {
