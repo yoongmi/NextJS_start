@@ -106,9 +106,7 @@ export default function Detail({ results }) {
 
 export async function getServerSideProps({ params: { params } }) {
   const id = params[1];
-  const result = await fetch(
-    `https://nextjsstartss.vercel.app/api/movies/${id}`
-  );
+  const result = await fetch(`http://localhost:3000/api/movies/${id}`);
   const results = await result.json();
   return {
     props: { results },
